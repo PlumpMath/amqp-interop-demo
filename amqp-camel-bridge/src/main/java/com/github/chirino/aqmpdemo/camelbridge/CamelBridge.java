@@ -99,8 +99,10 @@ public class CamelBridge {
             @Override
             public void configure() throws Exception {
                 //errorHandler(deadLetterChannel("mock:error"));
-                from("amqp-source:"+sourceDest).to("log:test");
-                from("timer://foo?fixedRate=true&period=5000").to("log:test");
+                from("amqp-source:"+sourceDest)
+                    .to("log:test")
+                    .to("amqp-target:"+targetDest);
+                // from("timer://foo?fixedRate=true&period=5000").to("log:test");
             }
         };
         builder.addRoutesToCamelContext(context);
